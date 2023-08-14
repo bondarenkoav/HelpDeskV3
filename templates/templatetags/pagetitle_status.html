@@ -1,0 +1,8 @@
+<h1>{{ status }}</h1>
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Панель управления</a></li>
+        <li class="breadcrumb-item">{{ app_name }}</li>
+        <li class="breadcrumb-item active">{{ type_document }}</li>
+    </ol>
+</nav>

@@ -1,0 +1,32 @@
+{% extends 'templatetags/rb_container.html' %}
+{% load django_bootstrap5 %}
+
+{% block tab_title %}Список маршрутов{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title pt-sm-1"></h5>
+                <table class="table table-sm datatable">
+                    {% if object_list %}
+                        <thead>
+                        <tr class="text-center">
+                            <th scope="col">#</th>
+                            <th scope="col">Маршрут</th>
+                        </tr>
+                        </thead>
+                    {% endif %}
+                    <tbody>
+                    {% for item in object_list %}
+                        <tr id="obj_{{ item.id }}" target="_blank" onclick="javascript:window.open('{% url 'base:upd-rout' item.pk %}')">
+                            <th scope="row" class="text-center">{{ item.id }}</th>
+                            <td>{{ item.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}

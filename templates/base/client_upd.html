@@ -1,0 +1,164 @@
+{% extends 'page_content_fluid.html' %}
+{% load static django_bootstrap5 %}
+
+{% block include_header %}
+    <style>
+        .form-group {
+            margin-bottom: .5rem;
+        }
+        .card-columns {
+            -webkit-column-count:1;
+            -moz-column-count:1;
+            column-count:1;
+        }
+        .card-body {
+            padding:.5rem 1rem 1.2rem 1rem;
+        }
+    </style>
+    <link href="{% static "css/suggestions-15.12.css" %}" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{% endblock %}
+
+{% block tab_title %}Заявка{% endblock %}
+{% block content %}
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <div class="row">
+                <div class="col-4">
+                    <h1>Заявка #{{ proposal.pk }}</h1>
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Панель управления</a></li>
+                            <li class="breadcrumb-item">{{ app_name.verbose_name }}</li>
+                            <li class="breadcrumb-item active">{{ proposal.type_document.name }}</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-8">
+                    <ul class="nav">
+                        {% for item in list_status %}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'exploitation:getlist-proposals' item.slug %}">{{ item.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <section class="section container">
+            <div class="row">
+                <div class="col-4 p-10">
+                    <div class="card-columns">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Объект</h6>
+                                <p class="h5">{{ proposal.client_words }}</p>
+                                <p class="card-text">{{ proposal.object_number }} ({{ proposal.object_address }})</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Описание неисправности</h6>
+                                <p class="card-text overflow-auto">{{ proposal.descript_troubles }}</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Добавлено</h6>
+                                <p class="card-text overflow-auto">{{ proposal.create_user }} <small>{{ proposal.date_time_add|date:"d.m.Y" }}</small></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Обновлено</h6>
+                                <p class="card-text overflow-auto">{{ proposal.update_user }} <small>{{ proposal.date_time_upd|date:"d.m.Y" }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8 p-10">
+                    <div class="row">
+                        <div class="card">
+                            {% bootstrap_form_errors form %}
+                            <form action="{% url 'exploitation:upd-manage-proposal' proposal.pk %}" method="post" class="form">{% csrf_token %}
+                                <div class="card-body mt-4">
+                                    <div class="mb-3">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                {% bootstrap_label "Даты" label_for="date_schedule" %}
+                                            </div>
+                                            <div class="col-9">
+                                                {% bootstrap_field form.date_schedule layout='horizontal' %}
+                                            </div>
+                                            <div class="col-9 offset-3">
+                                                {% bootstrap_field form.date_work layout='horizontal' %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                {% bootstrap_label "Описание исполнения" label_for="descript_work" %}
+                                            </div>
+                                            <div class="col-9">
+                                                {% bootstrap_field form.descript_work layout='inline' %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                {% bootstrap_label "Исполнители" label_for="coworkers" %}
+                                            </div>
+                                            <div class="col-9">
+                                                {% bootstrap_field form.coworkers layout='inline' %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% bootstrap_field form.status layout='horizontal' %}
+                                    <div class="mb-3">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                {% bootstrap_label "Акт" label_for="required_act" %}
+                                            </div>
+                                            {% if proposal.written_act %}
+                                                <div class="col-6">
+                                                    Акт выписан от {{ date_act }}
+                                                </div>
+                                            {% else %}
+                                                <div class="col-4">
+                                                    {% bootstrap_field form.required_act layout='inline' %}
+                                                </div>
+                                                <div class="col-4">
+                                                    {% bootstrap_field form.date_act layout='inline' %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <a type="button" class="btn btn-secondary" href="#">Закрыть заявку</a>
+                                        </div>
+                                        <div class="col-4 offset-4">
+                                            {% if perms.custom_add and perms.custom_change %}
+                                                {% bootstrap_button "Сохранить изменения" button_type="submit" button_class="btn-primary" %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <script>
+                                $(document).ready(function (){
+                                    $('#id_coworkers').select2();
+                                })
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

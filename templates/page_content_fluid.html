@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static base_tags %}
+
+{% block basebody %}
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        {% include 'templatetags/logo.html' %}
+        {% include 'templatetags/searchbar.html' %}
+        {% include 'templatetags/topnav.html' %}
+    </header>
+
+    {% block content %}{% endblock %}
+{% endblock %}

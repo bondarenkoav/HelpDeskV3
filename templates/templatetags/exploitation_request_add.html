@@ -1,0 +1,65 @@
+{% load django_bootstrap5 %}
+
+<div class="modal fade" id="newProposal" tabindex="-1" aria-labelledby="newProposalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newProposalLabel">Новая заявка на Эксплуатацию</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                {% bootstrap_label "Объект" label_for="object_number" %}*
+                            </div>
+                            <div class="col-3">
+                                {% bootstrap_field form.object_number layout='inline' %}
+                            </div>
+                            <div class="col-5">
+                                {% bootstrap_field form.client_words layout='inline' %}
+                            </div>
+                            <div class="col-12 mt-3">
+                                {% bootstrap_field form.object_address layout='inline' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                {% bootstrap_label "Неисправность" label_for="descript_trouble" %}*
+                            </div>
+                            <div class="col-8">
+                                {% bootstrap_field form.descript_trouble layout='inline' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                {% bootstrap_label "Исполнитель" label_for="coworkers" %}*
+                            </div>
+                            <div class="col-8">
+                                {% bootstrap_field form.coworkers layout='inline' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                {% bootstrap_label "Выполнить" label_for="date_schedule" %}*
+                            </div>
+                            <div class="col-8">
+                                {% bootstrap_field form.date_schedule layout='inline' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="submit" class="btn btn-primary">Создать запись</button>
+            </div>
+        </div>
+    </div>
+</div>

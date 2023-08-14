@@ -1,0 +1,98 @@
+{% extends 'page_content_fluid.html' %}
+{% load exploitation_tags %}
+
+{% block tab_title %}Список заявок{% endblock %}
+{% block content %}
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <div class="row">
+                <div class="col-4">
+                    {% include 'templatetags/pagetitle_status.html' with status=status app_name=app_name.verbose_name type_document=type_document %}
+                </div>
+                <div class="col-7">
+                    <ul class="nav">
+                        {% for item in list_status %}
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="{% url 'maintenance:getlist-proposals' item.slug %}">{{ item.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% include 'templatetags/maintenance_request_add.html' with form=form %}
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProposal">Добавить</button>
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title pt-sm-1"></h5>
+                            <table class="table table-sm datatable">
+                                {% if object_list %}
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th scope="col">#</th>
+                                            <th scope="col">Добавлено</th>
+                                            <th scope="col">Объект</th>
+                                            <th scope="col">Контрагент</th>
+                                            <th scope="col">Описание</th>
+                                            <th scope="col">{% if status.slug != 'complete' %}План{% else %}Исполнено{% endif %}</th>
+                                            <th scope="col">Исполнитель</th>
+                                            <th scope="col">Автор</th>
+                                        </tr>
+                                    </thead>
+                                {% endif %}
+                                <tbody>
+                                    {% for item in object_list %}
+                                        <tr id="obj_{{ item.id }}" target="_blank" onclick="javascript:window.open('{% getlink_mproposal_detailview item.status.slug item.pk %}')">
+                                            <th scope="row">{{ item.id }}</th>
+                                            <td class="text-center">
+                                                {{ item.date_time_add|date:"d.m" }}<br/>
+                                                {{ item.date_time_add|date:"H:i" }}
+                                            </td>
+                                            <td>{{ item.object_address }}</td>
+                                            <td>
+                                                {% if client_choices %}
+                                                    {{ item.client_choices.name }}
+                                                {% else %}
+                                                    {{ item.client_words }}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ item.descript_troubles|truncatechars:50 }}</td>
+                                            <td class="text-center">
+                                                {% if status.slug != 'complete' %}
+                                                    {{ item.date_schedule|date:"d.m" }}
+                                                {% else %}
+                                                    {{ item.date_work|date:"d.m" }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                                <small>
+                                                    {% for cowork in item.coworkers.all %}
+                                                        {% if forloop.counter > 1 %},{% endif %} {{ cowork.id }}<br/>
+                                                    {% endfor %}
+                                                </small>
+                                            </td>
+                                            <td class="text-center">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                                <small> {{ item.create_user }}</small>
+                                                {% if item.Update_user %}
+                                                    <br/>
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    <small> {{ item.update_user }}</small>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

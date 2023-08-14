@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static django_bootstrap5 %}
+
+{% block included_head %}
+{% endblock %}
+{% block tab_title %}Авторизация{% endblock %}
+{% block bodyclass %}class="text-center"{% endblock %}
+{% block basebody %}
+    <main>
+        <div class="container">
+
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                            <div class="d-flex justify-content-center py-4">
+                                <a href="{% url 'dashboard' %}" class="logo-big d-flex align-items-center w-auto">
+                                    <img src="{% static 'img/logo.png' %}" alt="logo helpdesk">
+                                </a>
+                            </div><!-- End Logo -->
+
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="pt-4 pb-2">
+                                        <h5 class="card-title text-center pb-0 fs-4">Авторизация</h5>
+                                    </div>
+
+                                    <form  method="post" action="{% url 'login' %}" class="row g-3 needs-validation" novalidate>{% csrf_token %}
+                                        <div class="col-12">
+                                            {% bootstrap_field form.username layout="floating" addon_before_class="input-group has-validation" error_css_class="invalid-feedback" %}
+                                        </div>
+                                        <div class="col-12">
+                                            {% bootstrap_field form.password layout="floating" error_css_class="invalid-feedback" %}
+                                        </div>
+                                        <div class="col-12">
+                                            {% bootstrap_button "Войти" button_type="submit" button_class="btn btn-primary w-100" %}
+                                        </div>
+                                    </form>
+                                    {% if form.non_field_errors %}
+                                        <p>Вы ввели не верные данные</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main><!-- End #main -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% load django_bootstrap5 %}
+
+<div class="modal fade" id="newClient" tabindex="-1" aria-labelledby="newClientLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newProposalLabel">Новый контрагент </h5>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                {% bootstrap_label "Тип контрагента" label_for="descript_trouble" %}*
+                            </div>
+                            <div class="col-8">
+                                {% bootstrap_field form.type layout='inline' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                {% bootstrap_label "Наименование" label_for="object_number" %}*
+                            </div>
+                            <div class="col-3">
+                                {% bootstrap_field form.name layout='inline' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                {% bootstrap_label "ИНН/КПП" label_for="coworkers" %}
+                            </div>
+                            <div class="col-4">
+                                {% bootstrap_field form.inn layout='inline' %}
+                            </div>
+                            <div class="col-4">
+                                {% bootstrap_field form.kpp layout='inline' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="submit" class="btn btn-primary">Создать запись</button>
+            </div>
+        </div>
+    </div>
+</div>

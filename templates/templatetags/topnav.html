@@ -1,0 +1,101 @@
+{% load static %}
+
+<nav class="header-nav ms-auto">
+
+    <ul class="d-flex align-items-center">
+
+        <li class="nav-item pe-2">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">
+                <img src="{% static 'img/home.png' %}" alt="find" class="d-inline-block align-text-top">
+            </a>
+        </li>
+        <li class="nav-item pe-4">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'img/find.png' %}" alt="find" class="d-inline-block align-text-top">
+            </a>
+        </li>
+        <li class="nav-item pe-2">
+            <a class="navbar-brand" href="{% url 'exploitation:getlist-proposals' 'open' %}">
+                <img src="{% static 'img/bug.png' %}" alt="exploitation-app" class="d-inline-block align-text-top">
+            </a>
+        </li>
+        <li class="nav-item pe-4">
+            <a class="navbar-brand" href="{% url 'build:getlist-proposals' 'open' %}">
+                <img src="{% static 'img/hammer.png' %}" alt="build-app" class="d-inline-block align-text-top">
+            </a>
+        </li>
+        <li class="nav-item pe-4">
+            <a class="navbar-brand" href="{% url 'maintenance:getlist-proposals' 'open' %}">
+                <img src="{% static 'img/tools.png' %}" alt="maintenance-app" class="d-inline-block align-text-top">
+            </a>
+        </li>
+        <li class="nav-item pe-3">
+            <a class="navbar-brand" href="{% url 'base:getlist-clients' %}">
+                <img src="{% static 'img/library.png' %}" alt="library-app" class="d-inline-block align-text-top">
+            </a>
+        </li>
+
+        {% if user.profile.list_scompany|length > 1 %}
+            <li class="nav-item dropdown pe-5">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{{ user.profile.current_scompany }}</a>
+                <ul class="dropdown-menu">
+                    {% for item in user.profile.list_scompany %}
+                        <li><a class="dropdown-item {% if item.pk == user.profile.current_scompany.pk %}disabled{% endif %}" href="{% url 'base:change-service-company' item.pk %}">{{ item.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endif %}
+
+        <li class="nav-item dropdown pe-3">
+            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                <img src="{% static 'img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
+                <span class="d-none d-md-block dropdown-toggle ps-2">{{ user.first_name|truncatechars:2 }} {{ user.last_name }}</span>
+            </a><!-- End Profile Iamge Icon -->
+
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <li class="dropdown-header">
+                    <h6>{{ user.profile.short_fio }}</h6>
+                    <span>{{ user.profile.post }}</span>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <i class="bi bi-briefcase"></i>
+                        <span>{{ user.profile.current_scompany }}</span>
+                    </a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <i class="bi bi-person"></i>
+                        <span>Мой профиль</span>
+                    </a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                    <i class="bi bi-question-circle"></i>
+                    <span>Нужна помощь?</span>
+                  </a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Выйти</span>
+                  </a>
+                </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav>

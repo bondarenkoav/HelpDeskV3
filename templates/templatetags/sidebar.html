@@ -1,0 +1,47 @@
+{% load mptt_tags %}
+
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+        {% if nodes %}
+            {% recursetree nodes %}
+                {% if node.is_root_node %}
+                    <!-- если это корневой узел -->
+                    {% if not node.is_leaf_node %}
+                        <!-- если это не элемент -->
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" data-bs-target="#{{ node.slug }}-nav" data-bs-toggle="collapse" href="#">
+                                <i class="{{ node.class_icon }}"></i><span>{{ node.name }}</span>
+                                <i class="bi bi-chevron-down ms-auto"></i>
+                            </a>
+                            <ul id="{{ node.slug }}-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                                {{ children }}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <!-- если это элемент -->
+                        <li class="nav-item">
+                            <a href="/{{ node.slug }}/" class="nav-link">
+                                <i class="bi bi-grid"></i>
+                                <span>{{ node.name }}</span>
+                            </a>
+                            {{ children }}
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <!-- если это не корневой узел -->
+                    {% if node.is_leaf_node %}
+                        <!-- если это элемент -->
+                        <li>
+                            <a href="/{{ node.get_root.slug }}/{{ node.slug }}/">
+                                <i class="bi bi-circle"></i><span>{{ node.name }}</span>
+                            </a>
+                            {{ children }}
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endrecursetree %}
+        {% endif %}
+
+    </ul>
+</aside>
